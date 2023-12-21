@@ -10,7 +10,7 @@ if __name__ == "__main__":
     Start.parsing_thehackernews()
     titletext=Start.get_titletext()
     maintext=Start.get_maintext()
-    print(maintext)
+   
     link=Start.get_link()
     folder=Start.get_foledr()
 

@@ -45,13 +45,13 @@ class Extracting_data:
             self._item_link=item.a.get("href")
 
         
-        paragraphs = soup.find_all("p")
-
+        #paragraphs = soup.find_all("p")
+        paragraphs=soup.find_all(class_="articlebody")
+        print(paragraphs)
         for item in paragraphs:
             self._item_main_text+=item.text
-        self._item_main_text=self._item_main_text[:-94]
+        self._item_main_text=self._item_main_text[:-110]
         images=soup.find_all(class_="separator")
-
 
         for img_tag in images[1:]:
 
