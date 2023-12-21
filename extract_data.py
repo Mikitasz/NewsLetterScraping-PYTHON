@@ -34,7 +34,7 @@ text=soup.find_all(class_="articlebody")
 for item in text:
    
     item_main_text=item.text[:-110]
-    print(item_main_text)
+ 
 images=soup.find_all(class_="separator")
 
 

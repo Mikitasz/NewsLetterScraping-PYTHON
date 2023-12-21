@@ -4,6 +4,7 @@ from docx.shared import RGBColor, Pt
 from docx.shared import Inches
 from docx import Document
 import docx
+from translate import polish_text
 def add_hyperlink(paragraph, text, url):
 
     part = paragraph.part
@@ -25,10 +26,10 @@ def word_format(item_text,item_main_text,item_link):
     document = Document()
     
     title = document.add_paragraph(item_text)
-    text = document.add_paragraph(item_main_text)
+    text = document.add_paragraph(polish_text)
     link = document.add_paragraph("Link: ")
     paragraphs = document.paragraphs
-    print(paragraphs)
+
     add_hyperlink(link, item_link, item_link)
    
     run = title.runs[0]
