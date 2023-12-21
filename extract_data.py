@@ -10,7 +10,7 @@ class Extracting_data:
         self._item_link=""
         self._img_link=""
         self._titlestext=""
-        self._item_main_text=[]
+        self._item_main_text=""
         self._img_filename=""
     def delete_files_in_folder_before_parsing(self):
         try:
@@ -48,8 +48,8 @@ class Extracting_data:
         paragraphs = soup.find_all("p")
 
         for item in paragraphs:
-            self._item_main_text.append(item.text)
-       # self._item_main_text=self._item_main_text[:-94]
+            self._item_main_text+=item.text
+        self._item_main_text=self._item_main_text[:-94]
         images=soup.find_all(class_="separator")
 
 
