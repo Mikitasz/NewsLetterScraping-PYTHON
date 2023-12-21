@@ -15,7 +15,7 @@ class Word_docx:
         self._titlestext=titlestext
         self._item_main_text=item_main_text
      
-        self.main_text_font_size=16
+        self.main_text_font_size=12
 
     def add_hyperlink(self,paragraph, text, url):
 
@@ -35,16 +35,22 @@ class Word_docx:
     def word_format(self):
 
         document = Document()
-        title = document.add_paragraph(self._titlestext)
+        title = document.add_heading("1. " + self._titlestext, level=1)
         text = document.add_paragraph(str(self._item_main_text)[33:-49])
         link = document.add_paragraph("Link: ")
         paragraphs = document.paragraphs
         print(paragraphs)
         self.add_hyperlink(link,self._item_link,self._item_link)
         run = title.runs[0]
+        run_main = text.runs[0]
+        font_main=run_main.font
+        font_main.color.rgb = RGBColor(0, 0, 0)
+        font_main.name= 'Calibri'
+        font_main = Pt(11)  # F
         font = run.font
         font.color.rgb = RGBColor(0, 0, 0)  # RGB values for black
         title.alignment = 0  # 0 for left-align 
+        font.name = 'Calibri'
         font.size = Pt(self.main_text_font_size)  # Font size 16 pointss
 
         document.save('example_document.docx')
