@@ -29,7 +29,7 @@ def word_format(item_text,item_main_text,item_link):
     text = document.add_paragraph(polish_text)
     link = document.add_paragraph("Link: ")
     paragraphs = document.paragraphs
-
+    print(paragraphs)
     add_hyperlink(link, item_link, item_link)
    
     run = title.runs[0]
