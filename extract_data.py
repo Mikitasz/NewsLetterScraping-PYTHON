@@ -1,7 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import os
-from make_word import Word_docx
+import urllib.request
+from PIL import Image
+
 class Extracting_data:
 
     def __init__(self,images_folder,url) -> None:
@@ -10,8 +12,10 @@ class Extracting_data:
         self._item_link=""
         self._img_link=""
         self._titlestext=""
-        self._item_main_text=""
+        self._item_main_text=[]
         self._img_filename=""
+        self._tegs=[]
+        self._li=[]
     def delete_files_in_folder_before_parsing(self):
         try:
             files = os.listdir(self._images_folder)
@@ -44,13 +48,33 @@ class Extracting_data:
             self._titlestext=item.text
             self._item_link=item.a.get("href")
 
-        
-        #paragraphs = soup.find_all("p")
-        paragraphs=soup.find_all(class_="articlebody")
-        print(paragraphs)
+        tags=soup.find_all('div', class_='articlebody')[0].find_all()
+        for tag in tags:
+            self._tegs.append(tag.name)
+        exclude_tags = ['div', 'a', 'center','br','i','ul','section','span']     
+        self._tegs = [tag for tag in self._tegs if tag not in exclude_tags]
+        value="img"
+        if value in self._tegs:
+            self._tegs.reverse()
+            self._tegs.remove(value)
+            self._tegs.reverse()
+
+        paragraphs = soup.find_all("p")
+       # paragraphs=soup.find_all(class_="articlebody")
+        li= soup.find_all('div', class_='articlebody')[0].find('ul')
+        try:
+            for item in list(li):
+                self._li.append(item.text)
+            exclude_tags2 = ['\n']     
+            self._li = [tag for tag in self._li if tag not in exclude_tags2]
+        except:
+            print("No li tags")
         for item in paragraphs:
-            self._item_main_text+=item.text
-        self._item_main_text=self._item_main_text[:-110]
+            self._item_main_text.append(item.text)
+
+        
+        self._item_main_text=self._item_main_text[:-1]
+      
         images=soup.find_all(class_="separator")
 
         for img_tag in images[1:]:
@@ -60,10 +84,12 @@ class Extracting_data:
         
             response = requests.get(_img_link)
             self._img_filename = os.path.join(self._images_folder,_img_link.split("/")[-1])
-      
-            with open(self._img_filename, 'wb') as f:
-                f.write(response.content)
-
+            urllib.request.urlretrieve(_img_link, self._img_filename)
+            img=Image.open(self._img_filename)
+            img=img.save(self._img_filename)
+           # with open(self._img_filename, 'wb') as f:
+            #    f.write(response.content)
+            
 
     def get_titletext(self):
         return self._titlestext
@@ -73,3 +99,9 @@ class Extracting_data:
         return self._item_link
     def get_foledr(self):
         return self._images_folder
+    def get_tags(self):
+        return self._tegs
+    def get_li(self):
+        return self._li
+    def get_imgname(self):
+        return self._img_filename
