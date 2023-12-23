@@ -13,9 +13,10 @@ class Extracting_data:
         self._img_link=""
         self._titlestext=""
         self._item_main_text=[]
-        self._img_filename=""
+        self._img_filename=[]
         self._tegs=[]
         self._li=[]
+        self._count=0
     def delete_files_in_folder_before_parsing(self):
         try:
             files = os.listdir(self._images_folder)
@@ -44,7 +45,9 @@ class Extracting_data:
         #   src=file.read()
         soup= BeautifulSoup(src,'lxml')
         title=soup.find_all(class_="story-title")
+      
         for item in title:
+            print(item.text)
             self._titlestext=item.text
             self._item_link=item.a.get("href")
 
@@ -81,12 +84,13 @@ class Extracting_data:
 
             img_src = img_tag.find('img')
             _img_link = img_src.get('data-src')
-        
+
             response = requests.get(_img_link)
-            self._img_filename = os.path.join(self._images_folder,_img_link.split("/")[-1])
-            urllib.request.urlretrieve(_img_link, self._img_filename)
-            img=Image.open(self._img_filename)
-            img=img.save(self._img_filename)
+            self._img_filename.append(os.path.join(self._images_folder,_img_link.split("/")[-1]))
+            urllib.request.urlretrieve(_img_link, self._img_filename[self._count])
+            img=Image.open(self._img_filename[self._count])
+            img=img.save(self._img_filename[self._count])
+            self._count+=1
            # with open(self._img_filename, 'wb') as f:
             #    f.write(response.content)
             

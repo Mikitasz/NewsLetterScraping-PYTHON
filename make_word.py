@@ -5,9 +5,11 @@ from docx.shared import Inches
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 import docx
-
+import os
+from docxcompose.composer import Composer
+num_files=0
 class Word_docx:
-    def __init__(self,images_folder,item_link,titlestext,item_main_text,tags,li_text_polish,imgname) -> None:
+    def __init__(self,images_folder,item_link,titlestext,item_main_text,tags,li_text_polish,imgname,n) -> None:
         self._images_folder = images_folder
         self._li_text_polish=li_text_polish
         self._tags=tags
@@ -17,6 +19,8 @@ class Word_docx:
         self._item_main_text=item_main_text
         self._imgname=imgname
         self.main_text_font_size=12
+        self.__n=n
+        self.__names=[]
 
     def add_hyperlink(self,paragraph, text, url):
 
@@ -36,9 +40,10 @@ class Word_docx:
     def word_format(self):
 
         document = Document()
-        title = document.add_heading("1. " + self._titlestext, level=1)
+        title = document.add_heading(f"{self.__n+1}. " + str(self._titlestext), level=1)
         j=0
         img_count=0
+        img_index=0
         for i in range(len(self._item_main_text)+len(self._li_text_polish)+2):
             print(self._tags)
             if self._tags[i]=="p":
@@ -61,11 +66,12 @@ class Word_docx:
                 font_main = Pt(11)  # F
                 #! add list for images 
             if self._tags[i]=="img" and img_count!=0:
-                print(self._imgname)
-                document.add_picture(self._imgname, width=Inches(4), height=Inches(2))
+                
+                document.add_picture(self._imgname[img_index], width=Inches(4), height=Inches(3))
                 last_paragraph = document.paragraphs[-1] 
                 last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
                 img_count+=1
+                img_index+=1
             else:
                 img_count+=1
         link = document.add_paragraph("Link: ")
@@ -79,6 +85,20 @@ class Word_docx:
         title.alignment = 0  # 0 for left-align 
         font.name = 'Calibri'
         font.size = Pt(self.main_text_font_size)  # Font size 16 pointss
-
-        document.save('example_document.docx')
+        global num_files
+        print(num_files)
+        num_files+=1
+        document.save(f"{self.__n}file.docx")
     
+    def merge(self):
+        global num_files
+       
+        master = Document("0file.docx")
+        composer = Composer(master)
+        for i in range(1,num_files):
+            doc_temp = Document(f"{i}file.docx")
+            composer.append(doc_temp)
+        composer.save("final.docx")
+#
+        for i in range(0, num_files):
+            os.remove(f"{i}file.docx")
