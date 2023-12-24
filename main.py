@@ -13,7 +13,12 @@ if __name__ == "__main__":
       Start=Extracting_data('images',links[i])
       #Start=Extracting_data('images',"https://thehackernews.com/2023/12/new-chameleon-android-banking-trojan.html")
       Start.delete_files_in_folder_before_parsing()
-      Start.parsing_thehackernews()
+      print(links[i][0:25])
+      match links[i][0:25]:
+        case "https://thehackernews.com":
+          Start.parsing_thehackernews()
+        case "https://thehackernews.com":
+          Start.parsing_thehackernews()
       titletext=Start.get_titletext()
       maintext=Start.get_maintext()
       tags=Start.get_tags()

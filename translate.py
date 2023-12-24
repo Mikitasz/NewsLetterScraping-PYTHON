@@ -17,7 +17,7 @@ class Translate:
         for i in self._li:   
             self._polish_li.append(translator.translate(str(i), src='en', dest='pl'))
        
-        self._title=translator.translate(self._eanglosh_title,src='en', dest='pl')
+        self._title=translator.translate(str(self._eanglosh_title),src='en', dest='pl')
        
     def get_polish(self):
         return self._polish_text

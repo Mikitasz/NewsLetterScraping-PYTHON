@@ -44,7 +44,8 @@ class Word_docx:
         j=0
         img_count=0
         img_index=0
-        for i in range(len(self._item_main_text)+len(self._li_text_polish)+2):
+        print(len(self._item_main_text)+len(self._li_text_polish)+1)
+        for i in range(len(self._item_main_text)+len(self._li_text_polish)+1):
             print(self._tags)
             if self._tags[i]=="p":
                 text = document.add_paragraph(str(self._item_main_text[j])[33:-49])
@@ -86,7 +87,7 @@ class Word_docx:
         font.name = 'Calibri'
         font.size = Pt(self.main_text_font_size)  # Font size 16 pointss
         global num_files
-        print(num_files)
+
         num_files+=1
         document.save(f"{self.__n}file.docx")
     
@@ -99,6 +100,6 @@ class Word_docx:
             doc_temp = Document(f"{i}file.docx")
             composer.append(doc_temp)
         composer.save("final.docx")
-#
+
         for i in range(0, num_files):
             os.remove(f"{i}file.docx")
