@@ -9,7 +9,7 @@ import os
 from docxcompose.composer import Composer
 num_files=0
 class Word_docx:
-    def __init__(self,images_folder,item_link,titlestext,item_main_text,tags,li_text_polish,imgname,n) -> None:
+    def __init__(self,images_folder,item_link,titlestext,item_main_text,tags,li_text_polish,imgname,n,h2_polish) -> None:
         self._images_folder = images_folder
         self._li_text_polish=li_text_polish
         self._tags=tags
@@ -21,6 +21,7 @@ class Word_docx:
         self.main_text_font_size=12
         self.__n=n
         self.__names=[]
+        self.__h2_polish=h2_polish
 
     def add_hyperlink(self,paragraph, text, url):
 
@@ -44,11 +45,14 @@ class Word_docx:
         j=0
         img_count=0
         img_index=0
-        print(len(self._item_main_text)+len(self._li_text_polish)+1)
-        for i in range(len(self._item_main_text)+len(self._li_text_polish)+1):
-            print(self._tags)
+        
+        print(f"{len(self._item_main_text)} and {len(self._li_text_polish)}")
+        print(self._tags)
+        for i in range(len(self._tags)):
+            print(f"tag={self._tags[i]} i={i}")
             if self._tags[i]=="p":
-                text = document.add_paragraph(str(self._item_main_text[j])[33:-49])
+       
+                text = document.add_paragraph(str(self._item_main_text[j]))
                 j+=1
                 run_main = text.runs[0]
                 font_main=run_main.font
@@ -65,9 +69,20 @@ class Word_docx:
                 font_main.color.rgb = RGBColor(0, 0, 0)
                 font_main.name= 'Calibri'
                 font_main = Pt(11)  # F
-                #! add list for images 
+            if self._tags[i]=="h2":
+            
+                text = document.add_paragraph(str(self.__h2_polish)[33:-49])
+                
+                text.paragraph_format.left_indent = Pt(30)
+                run_main = text.runs[0]
+                font_main=run_main.font
+                font_main.bold = True
+                font_main.color.rgb = RGBColor(0, 0, 0)
+                font_main.name= 'Calibri'
+                font_main = Pt(13)  # F
             if self._tags[i]=="img" and img_count!=0:
                 
+               
                 document.add_picture(self._imgname[img_index], width=Inches(4), height=Inches(3))
                 last_paragraph = document.paragraphs[-1] 
                 last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -103,3 +118,4 @@ class Word_docx:
 
         for i in range(0, num_files):
             os.remove(f"{i}file.docx")
+

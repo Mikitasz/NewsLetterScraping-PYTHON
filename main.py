@@ -3,7 +3,10 @@ from extract_data import Extracting_data
 from make_word import Word_docx
 from translate import Translate
 from user_interfase import Menu
+from GUI import GUI
 if __name__ == "__main__":
+    #gui=GUI()
+    #gui.dearpy()
     UI=Menu()
     UI.welcome()
     UI.options()
@@ -17,8 +20,8 @@ if __name__ == "__main__":
       match links[i][0:25]:
         case "https://thehackernews.com":
           Start.parsing_thehackernews()
-        case "https://thehackernews.com":
-          Start.parsing_thehackernews()
+       # case "https://thehackernews.com":
+         # Start.parsing_thehackernews()
       titletext=Start.get_titletext()
       maintext=Start.get_maintext()
       tags=Start.get_tags()
@@ -26,16 +29,19 @@ if __name__ == "__main__":
       link=Start.get_link()
       folder=Start.get_foledr()
       imgname=Start.get_imgname()
+      h2=Start.get_h2()
 
-
-      Google_translate=Translate(maintext,li,titletext)
+      Google_translate=Translate(maintext,li,titletext,h2)
       Google_translate.translate()
       main_text_polish=Google_translate.get_polish()
       li_text_polish=Google_translate.get_polish_li()
+      h2_polish=Google_translate.get_polish_h2()
       polish_title=Google_translate.get_polish_title()
-      Word=Word_docx(folder,link,polish_title,main_text_polish,tags,li_text_polish,imgname,i)
+      Word=Word_docx(folder,link,polish_title,main_text_polish,tags,li_text_polish,imgname,i,h2_polish)
       Word.word_format()
-    Word.merge()
+
+    if len(links)>1:
+      Word.merge()
 
 
 

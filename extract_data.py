@@ -17,6 +17,7 @@ class Extracting_data:
         self._tegs=[]
         self._li=[]
         self._count=0
+        self._h2=[]
     def delete_files_in_folder_before_parsing(self):
         try:
             files = os.listdir(self._images_folder)
@@ -52,19 +53,38 @@ class Extracting_data:
             self._item_link=item.a.get("href")
 
         tags=soup.find_all('div', class_='articlebody')[0].find_all()
+      
         for tag in tags:
-            self._tegs.append(tag.name)
-        exclude_tags = ['div', 'a', 'center','br','i','ul','section','span']     
+            if tag.name == 'img' and 'lazyload' in tag.get('class', []):
+                print("lazyload")
+            elif tag.name == 'p' and 'wn-description' in tag.get('class', []):
+                print("lisznije p")
+            else:
+                self._tegs.append(tag.name)
+       
+        exclude_tags = ['div', 'a', 'center','br','i','ul','section','span','table','tr','td','em','tbody','script','noscript','strong','center']     
         self._tegs = [tag for tag in self._tegs if tag not in exclude_tags]
-        value="img"
-        if value in self._tegs:
-            self._tegs.reverse()
-            self._tegs.remove(value)
-            self._tegs.reverse()
+        self._tegs.remove('img')
+        print(self._tegs)
 
         paragraphs = soup.find_all("p")
        # paragraphs=soup.find_all(class_="articlebody")
         li= soup.find_all('div', class_='articlebody')[0].find('ul')
+        h2= soup.find_all('h2')
+       
+        try:
+            for item in list(h2):
+                self._h2.append(item.text)
+            exclude_tags3 = ['\n']     
+            self._h2 = [tag for tag in self._h2 if tag not in exclude_tags3]
+        except:
+            print("No h2 tags")
+        
+        for item in paragraphs:
+            if item.name == 'p' and 'wn-description' in item.get('class', []):
+                print("nothing")
+            else:
+                self._item_main_text.append(item.text)
         try:
             for item in list(li):
                 self._li.append(item.text)
@@ -79,10 +99,11 @@ class Extracting_data:
         self._item_main_text=self._item_main_text[:-1]
       
         images=soup.find_all(class_="separator")
-
+     
         for img_tag in images[1:]:
 
             img_src = img_tag.find('img')
+      
             _img_link = img_src.get('data-src')
 
             response = requests.get(_img_link)
@@ -108,4 +129,6 @@ class Extracting_data:
     def get_li(self):
         return self._li
     def get_imgname(self):
-        return self._img_filename
+        return self._img_filename  
+    def get_h2(self):
+        return self._h2
