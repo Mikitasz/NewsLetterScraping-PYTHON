@@ -1,6 +1,6 @@
 import time
 
-#import pyfiglet 
+ 
 class Menu:
     def __init__(self) -> None:
         self._links=[]
