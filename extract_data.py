@@ -110,6 +110,40 @@ class ExtractingData:
             img = img.save(self._img_filename[self._count])
             self._count += 1
 
+    def parsing_bleepingcomputer(self):
+
+        headers = {
+            "Accept": "*/*",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0",
+        }
+        req = requests.get(self._url, headers=headers)
+        src = req.text
+        
+        soup = BeautifulSoup(src, 'lxml')
+
+        # title
+        title = soup.find('h1')
+        self._titlestext=title.text
+
+
+        articleBody = soup.find_all('div',class_="articleBody")
+        
+        # main text
+        print(len(articleBody[0].find_all('p')))
+        for p in articleBody[0].find_all('p'):
+            self._item_main_text.append(p.text)
+            self._tags.append('p')
+        
+        self._item_main_text.pop(0)
+        self._item_main_text=self._item_main_text[:-5]
+        self._tags=self._tags[:-6]
+        print(self._item_main_text)
+
+        # Link
+        self._item_link=self._url
+
+        # add tags
+
     def get_titletext(self):
         return self._titlestext
 

@@ -116,7 +116,7 @@ class WordDocx:
         for i in range(1, num_files):
             doc_temp = Document(f"{i}file.docx")
             composer.append(doc_temp)
-        composer.save(f"Final file is Newsletter {todays_date.day}.{todays_date.month}.docx")
+        composer.save(f"Newsletter {todays_date.day}.{todays_date.month}.docx")
 
         for i in range(0, num_files):
             os.remove(f"{i}file.docx")

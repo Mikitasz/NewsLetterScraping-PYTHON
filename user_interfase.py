@@ -73,8 +73,7 @@ class Menu:
         print("*" * 45)
         number_of_links = int(input("* Please enter the number of links: "))
         print("*" * 45)
-       
-        time.sleep(2)
+    
         print("")
         print("")
         print("")

@@ -4,7 +4,7 @@ from translate import Translate
 from user_interfase import Menu
 from datetime import date
 from create_folder import Create_foleder
-
+import tldextract
 if __name__ == "__main__":
     #init date
 
@@ -32,11 +32,14 @@ if __name__ == "__main__":
 
         Start = ExtractingData('images', links[i])
         Start.delete_files_in_folder_before_parsing()
-
-        match links[i][0:25]:
+        ext = tldextract.extract(links[i])
+   
+        match ext.domain:
             # check what siet it is
-            case "https://thehackernews.com":
+            case "thehackernews":
                 Start.parsing_thehackernews()
+            case "bleepingcomputer":
+                Start.parsing_bleepingcomputer()
 
         # main params
         titletext = Start.get_titletext()
@@ -69,4 +72,5 @@ if __name__ == "__main__":
     else:
         print(f"Final file is Newsletter {todays_date.day}.{todays_date.month}.docx")
     print("*" * 45)
-    x = input("Press Enter to escape...")
+
+x = input("Press Enter to escape...")

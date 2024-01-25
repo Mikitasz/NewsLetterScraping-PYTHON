@@ -14,6 +14,7 @@ class Translate:
 
     def translate(self):
         print("-- Make translation")
+        print(self._english_text)
         translator = Translator()  # Translating
         for i in self._english_text:
             self._polish_text.append(translator.translate(str(i), src='en', dest='pl').text)
