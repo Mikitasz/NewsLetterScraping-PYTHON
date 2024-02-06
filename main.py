@@ -5,43 +5,51 @@ from user_interfase import Menu
 from datetime import date
 from create_folder import Create_foleder
 import tldextract
-if __name__ == "__main__":
-    #init date
 
+
+#--------------------------
+#       MAIN FILE
+#--------------------------
+if __name__ == "__mainss__":
+
+    # Init date to add for file name
     todays_date = date.today() 
 
 
-    # Init Ui
+    # Init UI
     UI = Menu()
 
-    # print art
+    # Print art
     UI.welcome()
 
-    # print Main menu text 
+    # Print Main menu text 
     UI.options()
 
-    # get links from user
+    # Get links from user
     links = UI.get_links()
 
-    # make dir for images if it dose not exist
+    # Make dir for images if it dose not exist
     folder = Create_foleder('images')
     folder.create_folder()
 
-    # for cycle for extract data
+    # For cycle for extract data
     for i in range(len(links)):
-
+        
+        # Init class ExtractingData
         Start = ExtractingData('images', links[i])
+
+        # delete_files_in_folder_before_parsing
         Start.delete_files_in_folder_before_parsing()
+
+        # Determining which site it is
         ext = tldextract.extract(links[i])
-   
         match ext.domain:
-            # check what siet it is
             case "thehackernews":
                 Start.parsing_thehackernews()
             case "bleepingcomputer":
                 Start.parsing_bleepingcomputer()
 
-        # main params
+        # Main params for creating word file
         titletext = Start.get_titletext()
         maintext = Start.get_maintext()
         tags = Start.get_tags()
@@ -51,26 +59,28 @@ if __name__ == "__main__":
         imgname = Start.get_imgname()
         h2 = Start.get_h2()
 
-        # translate params
+        # Translate title and main text
         Google_translate = Translate(maintext, li, titletext, h2)
         Google_translate.translate()
 
 
-        # translate params
+        # Get polish text
         main_text_polish = Google_translate.get_polish()
         li_text_polish = Google_translate.get_polish_li()
         h2_polish = Google_translate.get_polish_h2()
         polish_title = Google_translate.get_polish_title()
 
-        # make word file
+        # Creating word file
         Word = WordDocx(folder, link, polish_title, main_text_polish, tags, li_text_polish, imgname, i, h2_polish)
         Word.word_format()
+
+    # Save docx format file
     print("*" * 45)
     if len(links) > 1:
         Word.merge()
-        print(f"Final file is Newsletter {todays_date.day}.{todays_date.month}.docx")
+        print(f"Final file is Newsletter {todays_date.day:02d}.{todays_date.month:02d}.docx")
     else:
-        print(f"Final file is Newsletter {todays_date.day}.{todays_date.month}.docx")
+        print(f"Final file is Newsletter {todays_date.day:02d}.{todays_date.month:02d}.docx")
     print("*" * 45)
 
 x = input("Press Enter to escape...")
