@@ -30,6 +30,7 @@ class WordDocx:
  
         self.__h2_polish = h2_polish
 
+    # Creates link 
     def add_hyperlink(self, paragraph, text, url):
         print("-- Making hyperlink")
         part = paragraph.part
@@ -48,6 +49,7 @@ class WordDocx:
         paragraph._p.append(hyperlink)
         return hyperlink
 
+    #   Create docx file
     def word_format(self):
 
         document = Document()
@@ -108,6 +110,8 @@ class WordDocx:
         num_files += 1
         document.save(f"{self.__n}file.docx")
 
+
+    # If more than 1 input link
     def merge(self):
         global num_files
 
@@ -116,7 +120,7 @@ class WordDocx:
         for i in range(1, num_files):
             doc_temp = Document(f"{i}file.docx")
             composer.append(doc_temp)
-        composer.save(f"Newsletter {todays_date.day}.{todays_date.month}.docx")
+        composer.save(f"Newsletter {todays_date.day:02d}.{todays_date.month:02d}.docx")
 
         for i in range(0, num_files):
             os.remove(f"{i}file.docx")

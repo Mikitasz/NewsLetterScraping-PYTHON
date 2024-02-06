@@ -128,21 +128,60 @@ class ExtractingData:
 
         articleBody = soup.find_all('div',class_="articleBody")
         
+        # Add tags
+        tags = soup.find_all('div', class_='articleBody')[0].find_all()
+        print("-- Add tags")
+        for tag in tags:
+            if tag.name == 'p' and 'text-align:center' in tag.get('style', []):
+                pass
+            elif tag.name == 'p' and 'wn-cz-related-article-wrapp' in tag.get('class', []):
+                pass
+            else:
+         
+                self._tags.append(tag.name)
+        exclude_tags = ['div', 'a', 'center', 'br', 'i', 'ul', 'section', 'span', 'table', 'tr', 'td', 'em', 'tbody',
+                        'script', 'noscript', 'strong', 'center','h3']
+        self._tags = [tag for tag in self._tags if tag not in exclude_tags]
+        self._tags.remove('img')
+        self._tags=self._tags[:-5]
+      
         # main text
-        print(len(articleBody[0].find_all('p')))
         for p in articleBody[0].find_all('p'):
             self._item_main_text.append(p.text)
-            self._tags.append('p')
-        
-        self._item_main_text.pop(0)
+         #   self._tags.append('p')
+        li = soup.find_all('div', class_='articleBody')[0].find('ul')
+      
+        for item in list(li):
+            if item=="\n":
+                pass
+            else:
+                self._li.append(item.text)
+        for element in self._item_main_text:
+            if element == '':
+                self._item_main_text.remove(element)
         self._item_main_text=self._item_main_text[:-5]
-        self._tags=self._tags[:-6]
-        print(self._item_main_text)
-
+       
+       
+        print(self._tags)
         # Link
         self._item_link=self._url
 
-        # add tags
+        images = soup.find_all(class_="articleBody")
+      
+        print("-- Download images")
+        for img_tag in images:
+           
+            img_src = img_tag.find_all('img')
+            for i in img_src[1:]:
+                _img_link = i.get('src')
+                try:
+                    self._img_filename.append(os.path.join(self._images_folder, _img_link.split("/")[-1]))
+                    urllib.request.urlretrieve(_img_link, self._img_filename[self._count])
+                    img = Image.open(self._img_filename[self._count])
+                    img = img.save(self._img_filename[self._count])
+                    self._count += 1
+                except Exception as e:
+                    print(f"error {e}")
 
     def get_titletext(self):
         return self._titlestext

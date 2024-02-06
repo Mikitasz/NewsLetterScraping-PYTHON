@@ -14,12 +14,14 @@ class Translate:
 
     def translate(self):
         print("-- Make translation")
-        print(self._english_text)
-        translator = Translator()  # Translating
+        print(self._li)
+        translator = Translator()  # Tra    nslating
         for i in self._english_text:
+            
             self._polish_text.append(translator.translate(str(i), src='en', dest='pl').text)
-
+     
         for i in self._li:
+           
             self._polish_li.append(translator.translate(str(i), src='en', dest='pl'))
 
         self._title = translator.translate(str(self._english_title), src='en', dest='pl')

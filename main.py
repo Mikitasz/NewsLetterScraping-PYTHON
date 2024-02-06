@@ -5,12 +5,12 @@ from user_interfase import Menu
 from datetime import date
 from create_folder import Create_foleder
 import tldextract
-
+import os
 
 #--------------------------
 #       MAIN FILE
 #--------------------------
-if __name__ == "__mainss__":
+if __name__ == "__main__":
 
     # Init date to add for file name
     todays_date = date.today() 
@@ -43,7 +43,7 @@ if __name__ == "__mainss__":
 
         # Determining which site it is
         ext = tldextract.extract(links[i])
-        match ext.domain:
+        match ext.domain:   
             case "thehackernews":
                 Start.parsing_thehackernews()
             case "bleepingcomputer":
@@ -80,6 +80,7 @@ if __name__ == "__mainss__":
         Word.merge()
         print(f"Final file is Newsletter {todays_date.day:02d}.{todays_date.month:02d}.docx")
     else:
+        os.rename('0file.docx',f"Newsletter {todays_date.day:02d}.{todays_date.month:02d}.docx")
         print(f"Final file is Newsletter {todays_date.day:02d}.{todays_date.month:02d}.docx")
     print("*" * 45)
 
