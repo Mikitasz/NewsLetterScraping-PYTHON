@@ -6,6 +6,7 @@ class Translate:
         self._english_text = english_text
         self._li = li
         self._h2 = h2
+        
         self._polish_text = []
         self._polish_li = []
         self._english_title = title
@@ -13,9 +14,10 @@ class Translate:
         self._h2_polish = []
 
     def translate(self):
+        
         print("-- Make translation")
-        print(self._li)
-        translator = Translator()  # Tra    nslating
+    
+        translator = Translator()  # Translating
         for i in self._english_text:
             
             self._polish_text.append(translator.translate(str(i), src='en', dest='pl').text)
@@ -26,8 +28,10 @@ class Translate:
 
         self._title = translator.translate(str(self._english_title), src='en', dest='pl')
         for i in self._h2:
-            self._h2_polish.append(translator.translate(str(i), src='en', dest='pl'))
+         
+            self._h2_polish.append(translator.translate(str(i), src='en', dest='pl').text)
 
+        print(self._h2_polish)
     def get_polish(self):
         return self._polish_text
 
@@ -38,4 +42,4 @@ class Translate:
         return self._title.text
 
     def get_polish_h2(self):
-        return self.get_polish_h2
+        return self._h2_polish

@@ -58,7 +58,7 @@ if __name__ == "__main__":
         folder = Start.get_foledr()
         imgname = Start.get_imgname()
         h2 = Start.get_h2()
-
+        
         # Translate title and main text
         Google_translate = Translate(maintext, li, titletext, h2)
         Google_translate.translate()

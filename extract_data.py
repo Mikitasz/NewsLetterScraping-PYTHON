@@ -139,7 +139,7 @@ class ExtractingData:
             else:
          
                 self._tags.append(tag.name)
-        exclude_tags = ['div', 'a', 'center', 'br', 'i', 'ul', 'section', 'span', 'table', 'tr', 'td', 'em', 'tbody',
+        exclude_tags = ['div', 'a', 'center', 'br', 'i', 'ul', 'section', 'span', 'table', 'tr', 'td', 'em', 'tbody','font',
                         'script', 'noscript', 'strong', 'center','h3']
         self._tags = [tag for tag in self._tags if tag not in exclude_tags]
         self._tags.remove('img')
@@ -150,19 +150,32 @@ class ExtractingData:
             self._item_main_text.append(p.text)
          #   self._tags.append('p')
         li = soup.find_all('div', class_='articleBody')[0].find('ul')
-      
-        for item in list(li):
-            if item=="\n":
-                pass
-            else:
-                self._li.append(item.text)
+        try:
+            for item in list(li):
+                if item=="\n":
+                    pass
+                else:
+                    self._li.append(item.text)
+        except:
+            pass
         for element in self._item_main_text:
             if element == '':
                 self._item_main_text.remove(element)
         self._item_main_text=self._item_main_text[:-5]
        
+        h2 = soup.find_all('h2')
        
-        print(self._tags)
+        try:
+            for item in list(h2):
+                print(item.text)
+                self._h2.append(item.text)
+            exclude_tags3 = ['\n']
+            self._h2 = [tag for tag in self._h2 if tag not in exclude_tags3]
+            print(self._h2)
+            print("-- Getting <h2> tags")
+        except:
+            print("-- No <h2> tags")
+   
         # Link
         self._item_link=self._url
 

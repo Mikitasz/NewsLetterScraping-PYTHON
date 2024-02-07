@@ -55,6 +55,7 @@ class WordDocx:
         document = Document()
         title = document.add_heading(f"{self.__n + 1}. " + str(self._titlestext), level=1)
         j = 0
+        h2_count=0
         img_count = 0
         img_index = 0
         print("-- Creating word-docx file")
@@ -78,14 +79,15 @@ class WordDocx:
                 font_main.name = 'Calibri'
                 font_main = Pt(11)  # F
             if self._tags[i] == "h2":
-                text = document.add_paragraph(str(self.__h2_polish)[33:-49])
-                text.paragraph_format.left_indent = Pt(30)
+                text = document.add_paragraph(str(self.__h2_polish[h2_count]))
+                h2_count+=1
+               
                 run_main = text.runs[0]
                 font_main = run_main.font
                 font_main.bold = True
                 font_main.color.rgb = RGBColor(0, 0, 0)
                 font_main.name = 'Calibri'
-                font_main = Pt(13)  # F
+                font_main = Pt(14)  # F
             if self._tags[i] == "img" and img_count != 0:
                 document.add_picture(self._imgname[img_index], width=Inches(4), height=Inches(3))
                 last_paragraph = document.paragraphs[-1]
