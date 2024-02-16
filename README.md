@@ -1,11 +1,12 @@
-# NewsLetterScraping
+# Newsletter Scraping Project
 
-## Project Description
+## Project Overview
 
-NewsLetterScraping is an educational project created for the purpose of learning and practicing web scraping to gather articles on the topic of cybersecurity from
-
-- https://thehackernews.com/
+Newsletter Scraping is an educational initiative designed to facilitate the learning and application of web scraping techniques. The primary focus of this project is to extract articles related to cybersecurity from prominent websites such as:
+- 
 - https://www.bleepingcomputer.com/ and etc.
+- The Hacker News[https://thehackernews.com/]
+- Bleeping Computer
 
 and generating a newsletter based on the collected data.
 
